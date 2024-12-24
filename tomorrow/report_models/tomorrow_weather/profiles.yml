@@ -1,0 +1,12 @@
+tomorrow_profile:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: postgres
+      password: postgres
+      port: 5432
+      dbname: tomorrow
+      schema: weather_reports
+      threads: 2

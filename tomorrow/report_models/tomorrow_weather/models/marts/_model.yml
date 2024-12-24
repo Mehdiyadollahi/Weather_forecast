@@ -1,0 +1,85 @@
+# models/model.yml
+
+version: 2
+
+models:
+  - name: weather_report_daily
+    description: "Downstream model filtering weather data for the next 5 days based on the timestamp."
+    columns:
+      - name: id
+        description: "Unique identifier for the weather record."
+        tests:
+          - not_null
+          - unique
+          
+      - name: api_call_timestamp
+        description: "Timestamp of when the API call was made."
+        tests:
+          - not_null
+
+      - name: timestamp
+        description: "Timestamp of the weather data reading, filtered to the next 5 days from the current timestamp."
+        tests:
+          - not_null
+
+      - name: lat
+        description: "Latitude of the geographic location."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [-90.0, 90.0]  
+
+      - name: lon
+        description: "Longitude of the geographic location."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [-180.0, 180.0]  
+
+      - name: temperature
+        description: "Temperature reading at the specified location and time."
+        tests:
+          - not_null
+
+      - name: feels_like
+        description: "Apparent temperature (feels like temperature)."
+        tests:
+          - not_null
+
+      - name: wind_speed
+        description: "Wind speed at the specified location and time."
+        tests:
+          - not_null
+
+      - name: humidity
+        description: "Humidity percentage at the specified location and time."
+        tests:
+          - not_null
+
+      - name: rain_intensity
+        description: "Intensity of rain at the specified location and time."
+
+      - name: snow_intensity
+        description: "Intensity of snow at the specified location and time."
+
+      - name: cloud_cover
+        description: "Cloud cover percentage at the specified location and time."
+        tests:
+          - not_null
+
+      - name: edw_created_at
+        description: "Timestamp for when the record was created in the data warehouse."
+        tests:
+          - not_null
+
+      - name: edw_updated_at
+        description: "Timestamp for when the record was last updated in the data warehouse."
+        tests:
+          - not_null
+
+    tests:
+      - relationships:
+          # Ensures each record in this model has a matching id in the upstream base model
+          column_name: id
+          to: ref('weather_data_base')
+          field: id
